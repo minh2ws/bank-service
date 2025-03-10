@@ -1,5 +1,6 @@
 package com.minhtn.bankservice.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user", schema = "public")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,6 +21,8 @@ import java.io.Serializable;
 @SuperBuilder
 public class User implements Serializable {
     @Id
+    @Column(name = "username")
     private String username;
     private String password;
+    private String role;
 }

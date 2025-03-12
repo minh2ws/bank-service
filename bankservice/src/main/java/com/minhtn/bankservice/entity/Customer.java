@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "customer_type")
+@Table(name = "customer")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -41,7 +41,7 @@ public class Customer extends BaseEntity implements Serializable {
     private String idNumber;
 
     @Column(name = "id_issue_date")
-    private String idIssueDate;
+    private Date idIssueDate;
 
     @Column(name = "id_issue_place")
     private String idIssuePlace;
@@ -57,6 +57,9 @@ public class Customer extends BaseEntity implements Serializable {
 
     @Column(name = "auth_at")
     private Date authAt;
+
+    @Column(name = "id_expire_date")
+    private Date idExpireDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_code")

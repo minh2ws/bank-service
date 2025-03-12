@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class UserController extends BaseController {
             @ApiResponse(content = @Content(schema = @Schema(implementation = UserDTO.class)))
     })
     @PostMapping("/{username}/password")
-    public ObjectResponseWrapper updatePassword(@PathVariable("username") String username, @RequestBody UpdatePasswordDTO updatePasswordDTO) {
+    public ObjectResponseWrapper updatePassword(@PathVariable("username") String username, @RequestBody @Valid UpdatePasswordDTO updatePasswordDTO) {
         userService.updatePassword(username, updatePasswordDTO);
         return ObjectResponseWrapper.builder()
                 .status(HttpStatus.OK.value())

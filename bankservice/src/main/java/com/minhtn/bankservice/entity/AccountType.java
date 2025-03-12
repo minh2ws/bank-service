@@ -10,17 +10,21 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "account_type")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
-public class User implements Serializable {
+public class AccountType extends BaseEntity implements Serializable {
     @Id
-    @Column(name = "username")
+    @Column(name = "account_type_id")
     @Access(AccessType.PROPERTY)
-    private String username;
-    private String password;
-    private String role;
+    private String accountTypeId;
+
+    private String name;
+
+    private Boolean status;
+
+    private String description;
 }

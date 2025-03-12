@@ -9,9 +9,10 @@ import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-@Table(name = "customer_type")
+@Table(name = "customer")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,6 +21,7 @@ import java.util.Date;
 public class Customer extends BaseEntity implements Serializable {
     @Id
     @Column(name = "customer_id")
+    @Access(AccessType.PROPERTY)
     private String customerId;
 
     @Column(name = "full_name")
@@ -41,7 +43,7 @@ public class Customer extends BaseEntity implements Serializable {
     private String idNumber;
 
     @Column(name = "id_issue_date")
-    private String idIssueDate;
+    private Date idIssueDate;
 
     @Column(name = "id_issue_place")
     private String idIssuePlace;
@@ -57,6 +59,9 @@ public class Customer extends BaseEntity implements Serializable {
 
     @Column(name = "auth_at")
     private Date authAt;
+
+    @Column(name = "id_expire_date")
+    private Date idExpireDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_code")
@@ -77,4 +82,11 @@ public class Customer extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_type_id")
     private CustomerType customerType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Account> accounts;
 }

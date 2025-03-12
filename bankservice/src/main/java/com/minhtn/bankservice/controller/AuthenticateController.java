@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class AuthenticateController extends BaseController {
             @ApiResponse(content = @Content(schema = @Schema(implementation = UserDTO.class)))
     })
     @PostMapping("/register")
-    public ObjectResponseWrapper register(@RequestBody RegUserDTO regUserDTO) {
+    public ObjectResponseWrapper register(@RequestBody @Valid RegUserDTO regUserDTO) {
         return ObjectResponseWrapper.builder()
                 .status(HttpStatus.OK.value())
                 .message("Success")

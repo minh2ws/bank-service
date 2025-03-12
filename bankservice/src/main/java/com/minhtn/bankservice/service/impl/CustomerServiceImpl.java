@@ -2,23 +2,19 @@ package com.minhtn.bankservice.service.impl;
 
 import com.minhtn.bankservice.entity.*;
 import com.minhtn.bankservice.handler.ServiceException;
-import com.minhtn.bankservice.model.customer.CheckedCustomerDTO;
-import com.minhtn.bankservice.model.customer.CreateCustomerDTO;
-import com.minhtn.bankservice.model.customer.CustomerDTO;
-import com.minhtn.bankservice.model.customer.UpdateCustomerDTO;
+import com.minhtn.bankservice.model.customer.*;
 import com.minhtn.bankservice.model.search.ParameterSearchCustomer;
 import com.minhtn.bankservice.model.wrapper.ListWrapper;
 import com.minhtn.bankservice.service.CustomerService;
 import com.minhtn.bankservice.ultility.Extension;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Check;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,6 +32,9 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
 
         //validate
+        Branch branch = branchRepository.findById(createCustomerDTO.getBranchId())
+                .orElseThrow(() -> new ServiceException("Branch not found"));
+
         Optional<Customer> custIdNum = customerRepository.findByIdNumber(createCustomerDTO.getIdNumber());
         if (custIdNum.isPresent()) {
             throw new ServiceException("Id number already exists");
@@ -82,6 +81,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 .idExpireDate(createCustomerDTO.getIdExpireDate())
                 .country(country)
                 .customerType(customerType)
+                .branch(branch)
                 .build();
 
         //validate address
@@ -198,15 +198,20 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
 
     @Override
-    public CustomerDTO deleteCustomer(String customerId) {
-        Customer customer = customerRepository.findById(customerId)
+    public CustomerDTO deleteCustomer(DeleteCustomerDTO deleteCustomerDTO) {
+        Customer customer = customerRepository.findById(deleteCustomerDTO.getCustomerId())
                 .orElseThrow(() -> new ServiceException("Customer type not found"));
 
-        List<String> accounts = accountRepository.findAccountByCustomerIdAndRecordStatNotEquals(customerId, "C");
+        User user = userRepository.findById(deleteCustomerDTO.getUpdateBy())
+                .orElseThrow(() -> new ServiceException("User not found"));
+
+        List<String> accounts = accountRepository.findAccountByCustomerIdAndRecordStatNotEquals(deleteCustomerDTO.getCustomerId(), "C");
         if (!accounts.isEmpty()) {
             throw new ServiceException("Customer has account. Please close all account before close customer");
         }
         customer.setRecordStat("C");
+        customer.setUpdateAt(new Date());
+        customer.setUpdateBy(user.getUsername());
         customer.setAuthStat("N");
         customerRepository.save(customer);
         return CustomerDTO.fromEntityRefIdOnly(customer);
@@ -229,12 +234,14 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
 
     @Override
-    public CustomerDTO getCustomerById(String customerId) {
-        return null;
-    }
-
-    @Override
     public ListWrapper<CustomerDTO> search(ParameterSearchCustomer parameterSeachCustomer) {
-        return null;
+        ListWrapper<Customer> customers = customerRepository.searchCustomer(parameterSeachCustomer);
+        return ListWrapper.<CustomerDTO>builder()
+                .total(customers.getTotal())
+                .totalPage(customers.getTotalPage())
+                .pageSize(customers.getPageSize())
+                .page(customers.getPage())
+                .data(customers.getData().stream().map(CustomerDTO::fromSearchCustomer).collect(Collectors.toList()))
+                .build();
     }
 }

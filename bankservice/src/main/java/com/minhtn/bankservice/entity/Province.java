@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class Province implements Serializable {
     @Id
     @Column(name = "province_id")
+    @Access(AccessType.PROPERTY)
     private String provinceId;
 
     private String name;

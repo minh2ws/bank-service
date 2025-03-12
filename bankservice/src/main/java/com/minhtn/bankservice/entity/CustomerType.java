@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class CustomerType extends BaseEntity implements Serializable {
     @Id
     @Column(name = "customer_type_id")
+    @Access(AccessType.PROPERTY)
     private String customerTypeId;
 
     private String name;

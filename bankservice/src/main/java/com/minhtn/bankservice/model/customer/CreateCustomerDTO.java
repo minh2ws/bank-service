@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
@@ -12,6 +13,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class CreateCustomerDTO {
 
+    @NotBlank(message = "Branch Id is required")
+    @Length(min = 3, max = 3, message = "Branch Id must be 3 characters")
+    private String branchId;
     @NotBlank(message = "Full Name is required")
     private String fullName;
     private String engName;

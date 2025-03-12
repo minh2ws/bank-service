@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class District implements Serializable {
     @Id
     @Column(name = "district_id")
+    @Access(AccessType.PROPERTY)
     private String districtId;
 
     private String name;

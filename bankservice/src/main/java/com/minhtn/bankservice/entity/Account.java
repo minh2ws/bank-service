@@ -21,6 +21,7 @@ import java.util.Date;
 public class Account extends BaseEntity implements Serializable {
     @Id
     @Column(name = "account_id")
+    @Access(AccessType.PROPERTY)
     private String accountId;
 
     @Column(name = "open_date")
@@ -58,8 +59,9 @@ public class Account extends BaseEntity implements Serializable {
 
     private String notes;
 
-    @Column(name = "branch_id")
-    private String branch_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

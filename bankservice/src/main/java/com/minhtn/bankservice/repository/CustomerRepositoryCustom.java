@@ -5,5 +5,5 @@ import com.minhtn.bankservice.model.search.ParameterSearchCustomer;
 import com.minhtn.bankservice.model.wrapper.ListWrapper;
 
 public interface CustomerRepositoryCustom {
-    ListWrapper<Customer> findCustomer(ParameterSearchCustomer parameterSearchCustomer);
+    ListWrapper<Customer> searchCustomer(ParameterSearchCustomer parameterSearchCustomer);
 }

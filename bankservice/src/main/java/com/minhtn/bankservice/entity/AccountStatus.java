@@ -1,9 +1,6 @@
 package com.minhtn.bankservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +21,7 @@ import java.util.Date;
 public class AccountStatus implements Serializable {
     @Id
     @Column(name = "account_status_id")
+    @Access(AccessType.PROPERTY)
     private String accountStatusId;
 
     private String name;

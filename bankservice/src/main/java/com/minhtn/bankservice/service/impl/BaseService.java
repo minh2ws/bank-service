@@ -23,5 +23,7 @@ public class BaseService {
     protected CustomerTypeRepository customerTypeRepository;
     @Autowired
     protected AccountRepository accountRepository;
+    @Autowired
+    protected BranchRepository branchRepository;
 
 }

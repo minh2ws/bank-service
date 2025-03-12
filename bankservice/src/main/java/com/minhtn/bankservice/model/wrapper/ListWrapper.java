@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class ListWrapper<T> {
     private long total;
+    private long totalPage;
     private long page;
     private int pageSize;
     private List<T> data;

@@ -8,34 +8,32 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
-@Table(name = "district")
+@Table(name = "account_status")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @SuperBuilder
-public class District implements Serializable {
+public class AccountStatus implements Serializable {
     @Id
-    @Column(name = "district_id")
+    @Column(name = "account_status_id")
     @Access(AccessType.PROPERTY)
-    private String districtId;
+    private String accountStatusId;
 
     private String name;
 
     @Column(name = "eng_name")
     private String engName;
 
-    @Column(name = "full_name")
-    private String fullName;
+    private String description;
 
-    @Column(name = "eng_full_name")
-    private String engFullName;
+    @Column(name = "response_code")
+    private String responseCode;
 
-    private Boolean status;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "province_id")
-    private Province province;
+    @Column(name = "user_action")
+    private String userAction;
 }

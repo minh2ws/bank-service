@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class Country implements Serializable {
     @Id
     @Column(name = "country_code")
+    @Access(AccessType.PROPERTY)
     private String countryCode;
 
     private String name;

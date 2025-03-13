@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCustomerDTO{
-
+public class DeleteCustomerDTO {
     @NotBlank(message = "Customer Id is required")
     private String customerId;
-    @NotBlank(message = "Update By is required")
-    private String updateBy;
 }

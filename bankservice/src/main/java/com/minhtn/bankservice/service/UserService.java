@@ -10,4 +10,5 @@ public interface UserService {
     UserDTO register(RegUserDTO regUserDTO);
     String login(LoginDTO loginDTO);
     void updatePassword(String userId, UpdatePasswordDTO updatePasswordDTO);
+    String getUsernameLogin();
 }

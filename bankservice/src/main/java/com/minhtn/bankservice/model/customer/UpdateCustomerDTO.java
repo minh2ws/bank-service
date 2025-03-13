@@ -24,7 +24,6 @@ public class UpdateCustomerDTO {
     private Date idIssueDate;
     private String idIssuePlace;
     private Date idExpireDate;
-    private String updateBy;
     private String countryCode;
     private String provinceId;
     private String districtId;

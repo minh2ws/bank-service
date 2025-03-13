@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +65,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         }
         user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public String getUsernameLogin() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return user.getUsername();
     }
 }

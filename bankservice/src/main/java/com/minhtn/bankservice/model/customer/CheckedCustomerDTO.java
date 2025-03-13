@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 public class CheckedCustomerDTO {
     @NotBlank(message = "Customer Id is required")
     private String customerId;
-    @NotBlank(message = "Auth By is required")
-    private String authBy;
 }

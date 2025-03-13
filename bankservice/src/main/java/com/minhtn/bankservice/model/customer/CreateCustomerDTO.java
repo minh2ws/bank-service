@@ -32,7 +32,6 @@ public class CreateCustomerDTO {
     private String idIssuePlace;
     @NotNull(message = "Id Expire Date is required")
     private Date idExpireDate;
-    private String createBy;
     @NotBlank(message = "Country code is required")
     private String countryCode;
     private String provinceId;

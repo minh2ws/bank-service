@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl extends BaseService implements CustomerService {
+    private final UserServiceImpl userServiceImpl;
+
     @Override
     public CustomerDTO createCustomer(CreateCustomerDTO createCustomerDTO) {
 
@@ -50,9 +52,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ServiceException("Email already exists");
         }
 
-        User user = userRepository.findById(createCustomerDTO.getCreateBy())
-                .orElseThrow(() -> new ServiceException("User not found"));
-
         Country country = countryRepository.findById(createCustomerDTO.getCountryCode())
                 .orElseThrow(() -> new ServiceException("Country not found"));
 
@@ -77,7 +76,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 .authBy(null)
                 .authAt(null)
                 .createAt(new Date())
-                .createBy(user.getUsername())
+                .createBy(userServiceImpl.getUsernameLogin())
                 .idExpireDate(createCustomerDTO.getIdExpireDate())
                 .country(country)
                 .customerType(customerType)
@@ -150,9 +149,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             customer.setEmail(updateCustomerDTO.getEmail());
         }
 
-        User user = userRepository.findById(updateCustomerDTO.getUpdateBy())
-                .orElseThrow(() -> new ServiceException("User not found"));
-
         customer.setFullName(updateCustomerDTO.getFullName());
         customer.setEngName(updateCustomerDTO.getEngName());
         customer.setAddress(updateCustomerDTO.getAddress());
@@ -160,7 +156,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customer.setIdIssueDate(updateCustomerDTO.getIdIssueDate());
         customer.setIdIssuePlace(updateCustomerDTO.getIdIssuePlace());
         customer.setIdExpireDate(updateCustomerDTO.getIdExpireDate());
-        customer.setUpdateBy(user.getUsername());
+        customer.setUpdateBy(userServiceImpl.getUsernameLogin());
         customer.setUpdateAt(new Date());
         customer.setAuthStat("N");
 
@@ -202,16 +198,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         Customer customer = customerRepository.findById(deleteCustomerDTO.getCustomerId())
                 .orElseThrow(() -> new ServiceException("Customer type not found"));
 
-        User user = userRepository.findById(deleteCustomerDTO.getUpdateBy())
-                .orElseThrow(() -> new ServiceException("User not found"));
-
         List<String> accounts = accountRepository.findAccountByCustomerIdAndRecordStatNotEquals(deleteCustomerDTO.getCustomerId(), "C");
         if (!accounts.isEmpty()) {
             throw new ServiceException("Customer has account. Please close all account before close customer");
         }
         customer.setRecordStat("C");
         customer.setUpdateAt(new Date());
-        customer.setUpdateBy(user.getUsername());
+        customer.setUpdateBy(userServiceImpl.getUsernameLogin());
         customer.setAuthStat("N");
         customerRepository.save(customer);
         return CustomerDTO.fromEntityRefIdOnly(customer);
@@ -224,9 +217,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (customer.getAuthStat().equals("A")) {
             throw new ServiceException("Customer already checked");
         }
-        User user = userRepository.findById(checkedCustomerDTO.getAuthBy())
-                .orElseThrow(() -> new ServiceException("User not found"));
-        customer.setAuthBy(user.getUsername());
+        customer.setAuthBy(userServiceImpl.getUsernameLogin());
         customer.setAuthAt(new Date());
         customer.setAuthStat("A");
         customerRepository.save(customer);

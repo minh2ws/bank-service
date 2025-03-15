@@ -1,6 +1,6 @@
 package com.minhtn.bankservice.model.search;
 
-import com.minhtn.bankservice.entity.Customer;
+import com.minhtn.bankservice.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,23 +13,14 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParameterSearchCustomer {
-    private String customerId;
-    private String fullName;
-    private String engName;
-    private String email;
-    private String phone;
-    private String address;
-    private String idType;
-    private String idNumber;
-    private Date idIssueDateFrom;
-    private Date idIssueDateTo;
-    private String idIssuePlace;
-    private Date idExpireDateFrom;
-    private Date idExpireDateTo;
-    private String recordStat;
+public class ParameterSearchAccount {
+    private String accountId;
+    private String currCode;
     private String authStat;
     private String authBy;
+    private Date closeDateFrom;
+    private Date closeDateTo;
+    private String branchId;
     private Date authAtFrom;
     private Date authAtTo;
     private Date createFrom;
@@ -38,12 +29,9 @@ public class ParameterSearchCustomer {
     private Date updateAtFrom;
     private Date updateAtTo;
     private String updateBy;
-    private String countryCode;
-    private String provinceId;
-    private String wardId;
-    private String districtId;
-    private String customerTypeId;
-    private String branchId;
+    private String customerId;
+    private String accountTypeId;
+    private String accountStatusId;
 
     // page
 
@@ -63,13 +51,13 @@ public class ParameterSearchCustomer {
     public void setSortField(String sortField) {
         if (sortField == null) return;
         boolean validField = false;
-        for (Field field : Customer.class.getDeclaredFields()) {
+        for (Field field : Account.class.getDeclaredFields()) {
             if (field.getName().equals(sortField)) {
                 validField = true;
                 break;
             }
         }
-        for (Field field : Customer.class.getSuperclass().getDeclaredFields()) {
+        for (Field field : Account.class.getSuperclass().getDeclaredFields()) {
             if (field.getName().equals(sortField)) {
                 validField = true;
                 break;

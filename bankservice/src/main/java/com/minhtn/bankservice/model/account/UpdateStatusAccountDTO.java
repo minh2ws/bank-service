@@ -4,16 +4,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
-
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAccountDTO {
+public class UpdateStatusAccountDTO {
     @NotBlank(message = "Account Id is required")
     private String accountId;
-    private BigDecimal maxLimit;
-    private String notes;
+    @NotBlank(message = "Account Status Id is required")
+    private String accountStatusId;
 }

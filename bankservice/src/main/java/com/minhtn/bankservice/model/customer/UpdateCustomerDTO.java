@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCustomerDTO {
+    @NotBlank(message = "Customer Id is required")
     private String customerId;
     private String fullName;
     private String engName;

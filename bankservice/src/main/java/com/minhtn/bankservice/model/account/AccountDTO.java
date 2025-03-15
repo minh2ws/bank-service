@@ -18,10 +18,13 @@ public class AccountDTO {
     private String accountId;
     private Date openDate;
     private String currCode;
-    private String recordStat;
+    private String createBy;
+    private Date createAt;
     private String authStat;
     private String authBy;
-    private String authAt;
+    private Date authAt;
+    private String updateBy;
+    private Date updateAt;
     private Date closeDate;
     private BigDecimal avlBal;
     private BigDecimal minBal;
@@ -41,12 +44,14 @@ public class AccountDTO {
     public static AccountDTO fromEntity(Account account) {
         return AccountDTO.builder()
                 .accountId(account.getAccountId())
-                .openDate(account.getOpenDate())
                 .currCode(account.getCurrCode())
-                .recordStat(account.getRecordStat())
+                .createAt(account.getCreateAt())
+                .createBy(account.getCreateBy())
                 .authStat(account.getAuthStat())
                 .authBy(account.getAuthBy())
                 .authAt(account.getAuthAt())
+                .updateAt(account.getUpdateAt())
+                .updateBy(account.getUpdateBy())
                 .closeDate(account.getCloseDate())
                 .avlBal(account.getAvlBal())
                 .minBal(account.getMinBal())
@@ -55,13 +60,35 @@ public class AccountDTO {
                 .notes(account.getNotes())
                 .branchId(account.getBranch().getBranchId())
                 .branchName(account.getBranch().getName())
-                .customerId(account.getCustomer().getCustomerId())
-                .customerName(account.getCustomer().getFullName())
-                .customerFullName(account.getCustomer().getFullName())
                 .accountTypeId(account.getAccountType().getAccountTypeId())
                 .accountTypeName(account.getAccountType().getName())
                 .accountStatusId(account.getAccountStatus().getAccountStatusId())
                 .accountStatusName(account.getAccountStatus().getName())
+                .build();
+
+    }
+
+    public static AccountDTO fromEntityRefIdOnly(Account account, Customer customer) {
+        return AccountDTO.builder()
+                .accountId(account.getAccountId())
+                .currCode(account.getCurrCode())
+                .createAt(account.getCreateAt())
+                .createBy(account.getCreateBy())
+                .authStat(account.getAuthStat())
+                .authBy(account.getAuthBy())
+                .authAt(account.getAuthAt())
+                .updateAt(account.getUpdateAt())
+                .updateBy(account.getUpdateBy())
+                .closeDate(account.getCloseDate())
+                .avlBal(account.getAvlBal())
+                .minBal(account.getMinBal())
+                .maxLimit(account.getMaxLimit())
+                .avlLimit(account.getAvlLimit())
+                .notes(account.getNotes())
+                .branchId(account.getBranch().getBranchId())
+                .customerId(account.getCustomer().getCustomerId())
+                .accountTypeId(account.getAccountType().getAccountTypeId())
+                .accountStatusId(account.getAccountStatus().getAccountStatusId())
                 .build();
 
     }

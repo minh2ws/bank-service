@@ -18,12 +18,9 @@ public class CreateAccountDTO {
     private String currCode;
     private BigDecimal maxLimit;
     private String notes;
-    private String createBy;
     @NotBlank(message = "Branch Id is required")
     @Length(min = 3, max = 3, message = "Branch Id must be 3 characters")
     private String branchId;
     @NotBlank(message = "Account Type Id is required")
     private String accountTypeId;
-    @NotBlank(message = "Account Status Id is required")
-    private String accountStatusId;
 }

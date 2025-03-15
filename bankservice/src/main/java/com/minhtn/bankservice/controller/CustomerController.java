@@ -61,6 +61,7 @@ public class CustomerController extends BaseController {
                                                    @RequestParam(value = "wardId", required = false) String wardId,
                                                    @RequestParam(value = "districtId", required = false) String districtId,
                                                    @RequestParam(value = "customerTypeId", required = false) String customerTypeId,
+                                                   @RequestParam(value =  "branchId", required = false) String branchId,
                                                    @RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
                                                    @RequestParam(value = "sortField", required = false) String sortField,
                                                    @RequestParam(value = "descSort", required = false, defaultValue = "false") Boolean sortBy,
@@ -96,9 +97,9 @@ public class CustomerController extends BaseController {
                 .wardId(wardId)
                 .districtId(districtId)
                 .customerTypeId(customerTypeId)
+                .branchId(branchId)
                 .startIndex(startIndex)
                 .pageSize(pageSize)
-                .sortField(sortField)
                 .descSort(sortBy)
                 .build();
         if (idIssueDateFrom != null) {
@@ -131,6 +132,7 @@ public class CustomerController extends BaseController {
         if (createTo != null) {
             parameterSearchCustomer.setCreateTo(new Date(createTo));
         }
+        parameterSearchCustomer.setSortField(sortField);
 
         return customerService.search(parameterSearchCustomer);
     }
@@ -151,7 +153,7 @@ public class CustomerController extends BaseController {
         return ObjectResponseWrapper.builder()
                 .status(HttpStatus.OK.value())
                 .message("Success")
-                .data(customerService.search(parameterSearchCustomer))
+                .data(customers.getData().getFirst())
                 .build();
     }
 
@@ -160,7 +162,7 @@ public class CustomerController extends BaseController {
     })
     @PostMapping("/register")
     public ObjectResponseWrapper register(@RequestBody @Valid CreateCustomerDTO createCustomerDTO) {
-        log.info("Search customer by id");
+        log.info("Register customer");
         return ObjectResponseWrapper.builder()
                 .status(HttpStatus.OK.value())
                 .message("Success")

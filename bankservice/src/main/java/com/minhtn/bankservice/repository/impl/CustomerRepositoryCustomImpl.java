@@ -132,6 +132,9 @@ public class CustomerRepositoryCustomImpl extends BaseRepositoryCustom implement
         if (!Extension.isBlankOrNull(parameterSearchCustomer.getCustomerTypeId())) {
             predicates.add(builder.equal(root.get("customerType").get("customerTypeId"), parameterSearchCustomer.getCustomerTypeId()));
         }
+        if (!Extension.isBlankOrNull(parameterSearchCustomer.getBranchId())) {
+            predicates.add(builder.equal(root.get("branch").get("branchId"), parameterSearchCustomer.getBranchId()));
+        }
 
         //Set conditions and get list ids by condition
         Predicate[] predicatesArray = predicates.toArray(new Predicate[0]); //parse query to list

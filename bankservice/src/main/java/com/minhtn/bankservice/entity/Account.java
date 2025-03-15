@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "account")
@@ -24,14 +25,8 @@ public class Account extends BaseEntity implements Serializable {
     @Access(AccessType.PROPERTY)
     private String accountId;
 
-    @Column(name = "open_date")
-    private Date openDate;
-
     @Column(name = "curr_code")
     private String currCode;
-
-    @Column(name = "record_stat")
-    private String recordStat;
 
     @Column(name = "auth_stat")
     private String authStat;
@@ -40,7 +35,7 @@ public class Account extends BaseEntity implements Serializable {
     private String authBy;
 
     @Column(name = "auth_at")
-    private String authAt;
+    private Date authAt;
 
     @Column(name = "close_date")
     private Date closeDate;
@@ -74,4 +69,12 @@ public class Account extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "acctstatus_id")
     private AccountStatus accountStatus;
+
+    @ManyToMany
+    @JoinTable(
+            name = "account_status_history",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_status_id")
+    )
+    private Set<AccountStatus> accountStatuses;
 }

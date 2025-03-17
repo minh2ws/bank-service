@@ -11,7 +11,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "account_status_history")

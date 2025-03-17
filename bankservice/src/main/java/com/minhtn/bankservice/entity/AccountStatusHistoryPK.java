@@ -2,9 +2,7 @@ package com.minhtn.bankservice.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.util.Date;

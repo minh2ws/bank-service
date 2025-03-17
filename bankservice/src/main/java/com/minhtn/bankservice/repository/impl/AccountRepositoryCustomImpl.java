@@ -113,6 +113,10 @@ public class AccountRepositoryCustomImpl extends BaseRepositoryCustom implements
         setSortField(builder, query1, root1, parameterSearchAccount.getSortField(), parameterSearchAccount.getDescSort());
         //Fetch reference entities
         EntityGraph<Account> accountGraph = em.createEntityGraph(Account.class);
+        accountGraph.addAttributeNodes("branch");
+        accountGraph.addAttributeNodes("customer");
+        accountGraph.addAttributeNodes("accountType");
+        accountGraph.addAttributeNodes("accountStatus");
 
         TypedQuery<Account> typedQuery1 = em.createQuery(query1);
         typedQuery1.setHint(ENTITY_GRAPH, accountGraph);

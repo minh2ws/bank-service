@@ -1,9 +1,13 @@
 package com.minhtn.bankservice.repository.impl;
 
 import com.minhtn.bankservice.ultility.Extension;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+
+import java.util.Map;
 
 public class BaseRepositoryCustom {
 
@@ -21,6 +25,20 @@ public class BaseRepositoryCustom {
             } else {
                 query.orderBy(builder.asc(root.get(sortField)));
             }
+        }
+    }
+
+    protected void setSortField(CriteriaBuilder builder, CriteriaQuery<?> query, Root<?> root, Map<String, Boolean> sortField) {
+        if (sortField.isEmpty()) {
+            query.orderBy(builder.desc(root.get("createAt")));
+        } else {
+            sortField.forEach((key, value) -> {
+                if (value) {
+                    query.orderBy(builder.desc(root.get(key)));
+                } else {
+                    query.orderBy(builder.asc(root.get(key)));
+                }
+            });
         }
     }
 }

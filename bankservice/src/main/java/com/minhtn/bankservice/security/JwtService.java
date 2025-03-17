@@ -4,8 +4,8 @@ import com.minhtn.bankservice.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -22,10 +22,7 @@ public class JwtService {
     private String JWT_SECRET;
 
     @Value("${jwt.expired}")
-    private int JWT_ACCESS_TOKEN_EXPIRATION;
-
-    @Value("${jwt.issuer}")
-    private String ISSUER;
+    private long JWT_ACCESS_TOKEN_EXPIRATION;
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -43,7 +40,7 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClams) {
-        long jwtTimeToLive = 10 * 24 * 60 * 60 * 1000; // 10 ngày
+        long jwtTimeToLive = JWT_ACCESS_TOKEN_EXPIRATION * 24 * 60 * 60 * 1000;
         return Jwts.builder()
                 .claims(extraClams)
                 .issuedAt(new Date(System.currentTimeMillis()))

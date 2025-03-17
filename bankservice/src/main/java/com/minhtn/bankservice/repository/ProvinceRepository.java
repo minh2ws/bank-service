@@ -1,6 +1,5 @@
 package com.minhtn.bankservice.repository;
 
-import com.minhtn.bankservice.entity.Country;
 import com.minhtn.bankservice.entity.Province;
 import org.springframework.data.jpa.repository.JpaRepository;
 

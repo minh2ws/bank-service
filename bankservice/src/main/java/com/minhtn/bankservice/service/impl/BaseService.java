@@ -1,7 +1,6 @@
 package com.minhtn.bankservice.service.impl;
 
 import com.minhtn.bankservice.repository.*;
-import com.minhtn.bankservice.repository.AccountStatusHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseService {
@@ -31,4 +30,8 @@ public class BaseService {
     protected AccountTypeRepository accountTypeRepository;
     @Autowired
     protected AccountStatusHistoryRepository accountStatusHistoryRepository;
+    @Autowired
+    protected TransactionRepository transactionRepository;
+    @Autowired
+    protected TrancodeRepository trancodeRepository;
 }

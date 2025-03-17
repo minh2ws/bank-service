@@ -7,6 +7,7 @@ import com.minhtn.bankservice.ultility.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -75,6 +76,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html","/v1/api-docs/**").permitAll()
                         .requestMatchers("/", "/" + Constant.AUTHENTICATE_SERVICE_URL + "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/" + Constant.CUSTOMER_SERVICE_URL + "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/" + Constant.TRANSACTION_SERVICE_URL + "/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )

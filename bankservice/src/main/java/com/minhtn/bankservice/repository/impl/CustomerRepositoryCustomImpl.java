@@ -158,6 +158,12 @@ public class CustomerRepositoryCustomImpl extends BaseRepositoryCustom implement
         //Fetch reference entities
         EntityGraph<Customer> customerGraph = em.createEntityGraph(Customer.class);
         customerGraph.addAttributeNodes("accounts");
+        customerGraph.addAttributeNodes("country");
+        customerGraph.addAttributeNodes("province");
+        customerGraph.addAttributeNodes("district");
+        customerGraph.addAttributeNodes("ward");
+        customerGraph.addAttributeNodes("customerType");
+        customerGraph.addAttributeNodes("branch");
 
         TypedQuery<Customer> typedQuery1 = em.createQuery(query1);
         typedQuery1.setHint(ENTITY_GRAPH, customerGraph);

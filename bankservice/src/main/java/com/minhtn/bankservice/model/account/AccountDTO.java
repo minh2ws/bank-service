@@ -1,7 +1,7 @@
 package com.minhtn.bankservice.model.account;
 
-import com.minhtn.bankservice.entity.*;
-import jakarta.persistence.*;
+import com.minhtn.bankservice.entity.Account;
+import com.minhtn.bankservice.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

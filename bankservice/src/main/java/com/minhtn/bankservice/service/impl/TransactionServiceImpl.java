@@ -108,6 +108,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         }
         Branch branch = branchRepository.findById(debitTransactionDTO.getBranchId())
                 .orElseThrow(() -> new ServiceException("Branch not found"));
+
+        //add lock row account
+        accountRepository.lockRecordAccount(debitTransactionDTO.getAccountId());
+
         //check amount limit
         if(account.getAvlLimit()
                 .compareTo(debitTransactionDTO.getTranAmount()) < 0) {
@@ -176,6 +180,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         }
         Trancode trancodeDebit = trancodeRepository.findById("01")
                 .orElseThrow(() -> new ServiceException("Trancode not found"));
+
+        //add lock row account
+        accountRepository.lockRecordAccount(internalTransactionDTO.getAccountId());
+
         //check amount limit
         if(account.getAvlLimit()
                 .compareTo(internalTransactionDTO.getTranAmount()) < 0) {

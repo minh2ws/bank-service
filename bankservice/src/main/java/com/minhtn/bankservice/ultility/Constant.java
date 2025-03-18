@@ -7,4 +7,5 @@ public class Constant {
     public static final String CUSTOMER_SERVICE_URL = API_VERSION + "/customers";
     public static final String TRANSACTION_SERVICE_URL = API_VERSION + "/transactions";
     public static final String ACCOUNT_SERVICE_URL = API_VERSION + "/accounts";
+    public static final String REPORT_SERVICE_URL = API_VERSION + "/reports";
 }

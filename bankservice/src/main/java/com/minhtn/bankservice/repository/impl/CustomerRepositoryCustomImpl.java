@@ -1,6 +1,7 @@
 package com.minhtn.bankservice.repository.impl;
 
 import com.minhtn.bankservice.entity.Customer;
+import com.minhtn.bankservice.model.search.ParameterReportCustByLocation;
 import com.minhtn.bankservice.model.search.ParameterSearchCustomer;
 import com.minhtn.bankservice.model.wrapper.ListWrapper;
 import com.minhtn.bankservice.repository.CustomerRepositoryCustom;
@@ -181,5 +182,38 @@ public class CustomerRepositoryCustomImpl extends BaseRepositoryCustom implement
                 .page(parameterSearchCustomer.getStartIndex() / pageSize + 1)
                 .data(customers)
                 .build();
+    }
+
+    @Override
+    public Long reportCustByLocation(ParameterReportCustByLocation parameterReportCustByLocation) {
+        HibernateCriteriaBuilder builder = em.unwrap(Session.class).getCriteriaBuilder();
+        JpaCriteriaQuery<String> query = builder.createQuery(String.class);
+        Root<Customer> root = query.from(Customer.class);
+        query.select(root.get("id"));
+
+        //build where condition
+        List<Predicate> predicates = new ArrayList<>();
+        if (!Extension.isBlankOrNull(parameterReportCustByLocation.getCountryCode())) {
+            predicates.add(builder.equal(root.get("country").get("countryCode"), parameterReportCustByLocation.getCountryCode()));
+        }
+        if (!Extension.isBlankOrNull(parameterReportCustByLocation.getProvinceId())) {
+            predicates.add(builder.equal(root.get("province").get("provinceId"), parameterReportCustByLocation.getProvinceId()));
+        }
+        if (!Extension.isBlankOrNull(parameterReportCustByLocation.getDistrictId())) {
+            predicates.add(builder.equal(root.get("district").get("districtId"), parameterReportCustByLocation.getDistrictId()));
+        }
+        if (!Extension.isBlankOrNull(parameterReportCustByLocation.getWardId())) {
+            predicates.add(builder.equal(root.get("ward").get("wardId"), parameterReportCustByLocation.getWardId()));
+        }
+
+        //Set conditions and get list ids by condition
+        Predicate[] predicatesArray = predicates.toArray(new Predicate[0]); //parse query to list
+        query.where(predicatesArray); //add list query
+
+        //paging
+        TypedQuery<String> typedQuery = em.createQuery(query);
+
+        //get total record
+        return em.createQuery(query.createCountQuery()).getSingleResult();
     }
 }

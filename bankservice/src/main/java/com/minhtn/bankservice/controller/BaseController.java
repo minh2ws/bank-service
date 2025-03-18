@@ -1,9 +1,6 @@
 package com.minhtn.bankservice.controller;
 
-import com.minhtn.bankservice.service.AccountService;
-import com.minhtn.bankservice.service.CustomerService;
-import com.minhtn.bankservice.service.TransactionService;
-import com.minhtn.bankservice.service.UserService;
+import com.minhtn.bankservice.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseController {
@@ -17,4 +14,6 @@ public class BaseController {
     protected AccountService accountService;
     @Autowired
     protected TransactionService transactionService;
+    @Autowired
+    protected ReportService reportService;
 }

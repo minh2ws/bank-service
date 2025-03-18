@@ -1,11 +1,14 @@
 package com.minhtn.bankservice.repository.impl;
 
 import com.minhtn.bankservice.entity.Transaction;
+import com.minhtn.bankservice.model.report.AcctTransByAvlRange;
+import com.minhtn.bankservice.model.report.ReportAcctTransByAvlRange;
 import com.minhtn.bankservice.model.search.ParameterSearchTransaction;
 import com.minhtn.bankservice.model.wrapper.ListWrapper;
 import com.minhtn.bankservice.repository.TransactionRepositoryCustom;
 import com.minhtn.bankservice.ultility.Extension;
 import jakarta.persistence.EntityGraph;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -15,6 +18,7 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,5 +154,31 @@ public class TransactionRepositoryCustomImpl extends BaseRepositoryCustom implem
                 .page(parameterSearchTransaction.getStartIndex() / pageSize + 1)
                 .data(transactions)
                 .build();
+    }
+
+    @Override
+    public List<AcctTransByAvlRange> reportAcctTransByRange(BigDecimal maxRange, BigDecimal minRange) {
+        String max = "maxRange";
+        String min = "minRange";
+        Query query = em.createNativeQuery("select b.total_acct, d.total_tran from\n" +
+                "(select count(a.account_id) total_acct from account a where a.avl_bal > :maxRange) b,\n" +
+                "(select count(t.tran_id) total_tran from public.transaction t where t.account_id in (select a.account_id from account a where a.avl_bal > :maxRange)) d\n" +
+                "union all\n" +
+                "select b.total_acct, d.total_tran from\n" +
+                "(select count(a.account_id) total_acct from account a where a.avl_bal <= :maxRange and a.avl_bal >= :minRange) b,\n" +
+                "(select count(t.tran_id) total_tran from public.transaction t where t.account_id in (select a.account_id from account a where a.avl_bal <= :maxRange and a.avl_bal >= :minRange)) d\n" +
+                "union all\n" +
+                "select b.total_acct, d.total_tran from\n" +
+                "(select count(a.account_id) total_acct from account a where a.avl_bal < :minRange) b,\n" +
+                "(select count(t.tran_id) total_tran from public.transaction t where t.account_id in (select a.account_id from account a where a.avl_bal < :minRange)) d");
+        query.setParameter(max, maxRange);
+        query.setParameter(min, minRange);
+        List<Object[]> resultList = query.getResultList();
+        return resultList.stream()
+                .map(result -> AcctTransByAvlRange.builder()
+                        .totalAcct(Double.parseDouble(result[0].toString()))
+                        .totalTran(Double.parseDouble(result[1].toString()))
+                        .build())
+                .toList();
     }
 }

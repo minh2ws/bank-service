@@ -16,4 +16,7 @@ public interface AccountRepository extends JpaRepository<Account, String>, Accou
 
     @Query(value = "select max(a.accountId) from Account a where a.customer.customerId = ?1")
     String findMaxAccountIdByCustomerId(String customerId);
+
+    @Query(value = "select a.account_id from public.account a where a.account_id = ?1 for update", nativeQuery = true)
+    void lockRecordAccount(String accountId);
 }
